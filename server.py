@@ -59,7 +59,7 @@ def get_all_users_descending():
 def get_all_users_ascending():
     pass
 
-@app.route("/user/<user_id>", methods=["GET"]):
+@app.route("/user/<user_id>", methods=["GET"])
 def get_one_user(user_id):
     pass
 
@@ -78,3 +78,10 @@ def get_all_blog_posts(user_id):
 @app.route("/blog_post/<blog_post_id>", methods=["GET"])
 def get_one_blog_post(blog_post_id):
     pass
+
+@app.route("/blog_post/<blog_post_id>", methods=["DELETE"])
+def delete_blog_post(blog_post_id): 
+    pass
+
+if __name__ == "__main__":
+    app.run(debug=True)
