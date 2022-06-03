@@ -3,6 +3,8 @@ from datetime import datetime
 from sqlalchemy import event # need to make foreign key constraint configuration function
 from sqlalchemy.engine import Engine
 from flask import Flask, request, jsonify
+from flask_sqlalchemy import SQLAlchemy
+
 # App  
 app = Flask(__name__) # points to a flask object
 
@@ -11,6 +13,9 @@ app = Flask(__name__) # points to a flask object
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///sqlitedb.file"
 app.config["SQLALCHEMY_TRACK_MODIFICATION"] = False
 
+# configure sqlite3 to enforce foreign key constraints
+
+# connect database to app
 db = SQLAlchemy(app)
 @event.listens_for(Engine, "connect")
 def _set_sqlite_pragma(dbapi_connection, connection_record):
@@ -40,3 +45,36 @@ class BlogPost(db.Model):
     # the blog post has a user Id associated and it's linked to the user Table so the id 
     # can't be null. That's why we use the enforce foreign key configuration above
     user_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False) 
+
+
+@app.route("/user", methods=["POST"])
+def create_user(): 
+    pass
+
+@app.route("/user/descending_id", methods=["GET"])
+def get_all_users_descending():
+    pass
+
+@app.route("/user/ascending_id", methods=["GET"])
+def get_all_users_ascending():
+    pass
+
+@app.route("/user/<user_id>", methods=["GET"]):
+def get_one_user(user_id):
+    pass
+
+@app.route("/user/<user_id>", methods=["DELETE"])
+def delete_user(user_id):
+    pass
+
+@app.route("/blog_post/<user_id>", methods=["POST"])
+def create_blog_post(user_id):
+    pass
+
+@app.route("/user/<user_id>", methods=["GET"])
+def get_all_blog_posts(user_id):
+    pass
+
+@app.route("/blog_post/<blog_post_id>", methods=["GET"])
+def get_one_blog_post(blog_post_id):
+    pass
