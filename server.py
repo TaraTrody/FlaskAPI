@@ -4,6 +4,7 @@ from sqlalchemy import event # need to make foreign key constraint configuration
 from sqlalchemy.engine import Engine
 from flask import Flask, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
+import linked_list
 
 # App  
 app = Flask(__name__) # points to a flask object
@@ -63,7 +64,20 @@ def create_user():
 
 @app.route("/user/descending_id", methods=["GET"])
 def get_all_users_descending():
-    pass
+    users = User.query.all() # returns users in ascending order by id
+    all_users_ll = linked_list.LinkedList()
+
+    for user in users:
+        all_users_ll.insert_beginning(
+            {
+                "id": user.id,
+                "name": user.name,
+                "address": user.address,
+                "phone": user.phone,
+
+            }
+        )
+    return jsonify(all_users_ll.to_list()), 200
 
 @app.route("/user/ascending_id", methods=["GET"])
 def get_all_users_ascending():
